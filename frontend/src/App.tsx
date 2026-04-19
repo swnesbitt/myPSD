@@ -71,7 +71,7 @@ export default function App() {
       </AppShell.Header>
 
       <AppShell.Main>
-        <Grid gap="lg" align="flex-start">
+        <Grid gutter="lg" align="flex-start">
           <Grid.Col span={{ base: 12, md: 4, lg: 3 }}>
             <Controls value={state} onChange={setState} />
           </Grid.Col>
