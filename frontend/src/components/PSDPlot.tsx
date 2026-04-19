@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Group, NumberInput, Paper, Text } from '@mantine/core'
+import { useMediaQuery } from '@mantine/hooks'
 import createPlotlyComponent from 'react-plotly.js/factory'
 // @ts-expect-error plotly.js-basic-dist-min has no types
 import Plotly from 'plotly.js-basic-dist-min'
@@ -53,6 +54,12 @@ export function PSDPlot({ nd }: Props) {
   const [xmax, setXmax] = useState<number>(DEFAULTS.xmax)
   const [ymin, setYmin] = useState<number>(DEFAULTS.ymin)
   const [ymax, setYmax] = useState<number>(DEFAULTS.ymax)
+  const isNarrow = useMediaQuery('(max-width: 600px)')
+  const titleSize = isNarrow ? 18 : 26
+  const axisTitleSize = isNarrow ? 14 : 20
+  const tickSize = isNarrow ? 12 : 18
+  const baseFontSize = isNarrow ? 13 : 18
+  const plotHeight = isNarrow ? 320 : 460
 
   const data = nd
     ? [
@@ -110,29 +117,31 @@ export function PSDPlot({ nd }: Props) {
         layout={{
           title: {
             text: 'Particle size distribution',
-            font: { size: 26 },
+            font: { size: titleSize },
           },
           xaxis: {
             title: {
               text: 'Particle diameter (mm)',
-              font: { size: 20 },
+              font: { size: axisTitleSize },
             },
-            tickfont: { size: 18 },
+            tickfont: { size: tickSize },
             range: [xmin, xmax],
           },
           yaxis: {
             title: {
               text: 'log₁₀ N(D) (mm⁻¹ m⁻³)',
-              font: { size: 20 },
+              font: { size: axisTitleSize },
             },
-            tickfont: { size: 18 },
+            tickfont: { size: tickSize },
             range: [ymin, ymax],
           },
-          margin: { t: 60, b: 70, l: 90, r: 20 },
-          height: 460,
+          margin: isNarrow
+            ? { t: 40, b: 50, l: 60, r: 10 }
+            : { t: 60, b: 70, l: 90, r: 20 },
+          height: plotHeight,
           plot_bgcolor: '#f7f9fc',
           paper_bgcolor: '#ffffff',
-          font: { family: 'system-ui, sans-serif', size: 18 },
+          font: { family: 'system-ui, sans-serif', size: baseFontSize },
         }}
         config={{ displaylogo: false, responsive: true }}
         style={{ width: '100%' }}

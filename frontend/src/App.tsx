@@ -56,7 +56,7 @@ export default function App() {
   }, [state])
 
   return (
-    <AppShell header={{ height: 100 }} padding="lg">
+    <AppShell header={{ height: { base: 150, sm: 100 } }} padding={{ base: 'sm', sm: 'lg' }}>
       <AppShell.Header className="header">
         <img src="/logo.svg" alt="myPSD" className="brand" />
         <div className="subtitle">
