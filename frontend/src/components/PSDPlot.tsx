@@ -4,6 +4,41 @@ import createPlotlyComponent from 'react-plotly.js/factory'
 // @ts-expect-error plotly.js-basic-dist-min has no types
 import Plotly from 'plotly.js-basic-dist-min'
 import type { NDCurve } from '../types'
+import { HelpTip } from './HelpTip'
+
+const TIP_Y = (
+  <>
+    The y-axis is log₁₀ N(D) in mm⁻¹ m⁻³ — the number concentration of
+    particles per unit diameter bin, per cubic meter. Its vertical level is
+    set by <b>N<sub>w</sub></b>, the normalization constant of Testud
+    et al. (2001): the intercept parameter an exponential PSD would have if
+    it carried the same water content and D<sub>m</sub> as the gamma PSD.
+    N<sub>w</sub> is independent of μ, so it isolates concentration from
+    spectral shape. Log₁₀ N<sub>w</sub> ≈ 3–3.5 is typical continental
+    stratiform; ≥ 4 is maritime warm rain or deep convection.
+  </>
+)
+
+const TIP_X = (
+  <>
+    Equivolume spherical diameter (mm). For oblate raindrops this is the
+    diameter of a sphere with the same volume as the drop — not the
+    horizontal axis. Ice habits (sector plates, rosettes, aggregates) use
+    their characteristic maximum dimension as supplied to the T-matrix
+    calculation.
+  </>
+)
+
+const TIP_CURVE = (
+  <>
+    Normalized-gamma PSD of Testud et al. (2001):{' '}
+    N(D) = N<sub>w</sub> · f(μ) · (D/D<sub>m</sub>)<sup>μ</sup> ·
+    exp[−(3.67+μ) D/D<sub>m</sub>], with f(μ) = (6/3.67⁴)(3.67+μ)
+    <sup>μ+4</sup>/Γ(μ+4). D<sub>m</sub> shifts the peak, μ controls
+    breadth (narrow vs broad), N<sub>w</sub> scales the whole curve.
+    The shaded area (in linear units) is the total concentration N<sub>T</sub>.
+  </>
+)
 
 const Plot = createPlotlyComponent(Plotly)
 
@@ -53,6 +88,23 @@ export function PSDPlot({ nd }: Props) {
 
   return (
     <Paper withBorder p="md" radius="md" shadow="xs">
+      <Group gap="lg" mb={4} wrap="wrap">
+        <Text size="xs" c="dimmed" fw={500}>
+          Definitions:
+        </Text>
+        <Text size="xs" c="dimmed">
+          y-axis (N<sub>w</sub>)
+          <HelpTip label={TIP_Y} />
+        </Text>
+        <Text size="xs" c="dimmed">
+          x-axis (D)
+          <HelpTip label={TIP_X} />
+        </Text>
+        <Text size="xs" c="dimmed">
+          curve N(D)
+          <HelpTip label={TIP_CURVE} />
+        </Text>
+      </Group>
       <Plot
         data={data}
         layout={{
