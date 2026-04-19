@@ -56,21 +56,32 @@ export function PSDPlot({ nd }: Props) {
       <Plot
         data={data}
         layout={{
-          title: { text: 'Particle size distribution' },
+          title: {
+            text: 'Particle size distribution',
+            font: { size: 20 },
+          },
           xaxis: {
-            title: { text: 'Particle diameter (mm)' },
+            title: {
+              text: 'Particle diameter (mm)',
+              font: { size: 16 },
+            },
+            tickfont: { size: 14 },
             range: [xmin, xmax],
           },
           yaxis: {
-            title: { text: 'N(D) (mm⁻¹ m⁻³)' },
+            title: {
+              text: 'N(D) (mm⁻¹ m⁻³)',
+              font: { size: 16 },
+            },
+            tickfont: { size: 14 },
             type: 'log',
             range: [ymin, ymax],
           },
-          margin: { t: 40, b: 50, l: 70, r: 20 },
-          height: 380,
+          margin: { t: 50, b: 60, l: 80, r: 20 },
+          height: 420,
           plot_bgcolor: '#f7f9fc',
           paper_bgcolor: '#ffffff',
-          font: { family: 'system-ui, sans-serif' },
+          font: { family: 'system-ui, sans-serif', size: 14 },
         }}
         config={{ displaylogo: false, responsive: true }}
         style={{ width: '100%' }}
