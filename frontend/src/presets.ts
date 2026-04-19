@@ -34,15 +34,15 @@ export const PRESETS: Preset[] = [
   },
   {
     key: 'snow_sector_light',
-    label: 'Light sector snow',
-    source: 'Heymsfield et al. 2008',
-    values: { dm: 1.2, logNw: 3.0, mu: 3, cantingStd: 7, precip: 'snow_sector' },
+    label: 'Light sector-plate snow',
+    source: 'Heymsfield 2008; Borque 2019 μ–Dm',
+    values: { dm: 1.2, logNw: 3.0, mu: 1, cantingStd: 7, precip: 'snow_sector' },
   },
   {
     key: 'snow_aggregates_heavy',
     label: 'Heavy snow aggregates',
-    source: 'Heymsfield 2008; Ryzhkov 2013',
-    values: { dm: 4.0, logNw: 3.2, mu: 2, cantingStd: 12, precip: 'snow_aggregate' },
+    source: 'Heymsfield 2008; Borque 2019 μ–Dm; Ding 2020 m–D',
+    values: { dm: 4.0, logNw: 3.2, mu: -1, cantingStd: 12, precip: 'snow_aggregate' },
   },
   {
     key: 'hail_70dbz',
