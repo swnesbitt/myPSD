@@ -73,6 +73,9 @@ export function Controls({ value, onChange }: Props) {
           data={[
             { value: 'rain', label: 'Rain' },
             { value: 'hail', label: 'Hail' },
+            { value: 'snow_sector', label: 'Sector snowflake' },
+            { value: 'snow_rosette', label: '6-point bullet rosette' },
+            { value: 'snow_aggregate', label: 'Bullet-rosette aggregate' },
           ]}
           allowDeselect={false}
         />

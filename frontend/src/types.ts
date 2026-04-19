@@ -1,5 +1,10 @@
 export type Band = 'S' | 'C' | 'X'
-export type Precip = 'rain' | 'hail'
+export type Precip =
+  | 'rain'
+  | 'hail'
+  | 'snow_sector'
+  | 'snow_rosette'
+  | 'snow_aggregate'
 
 export interface ComputeRequest {
   dm: number
@@ -29,7 +34,13 @@ export interface NDCurve {
   n_d: number[]
 }
 
+export interface AssumptionsData {
+  title: string
+  bullets: string[]
+}
+
 export interface ComputeResponse {
   metrics: Metrics
   nd: NDCurve
+  assumptions: AssumptionsData
 }

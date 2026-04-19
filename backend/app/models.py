@@ -6,7 +6,13 @@ from pydantic import BaseModel, Field
 
 
 Band = Literal["S", "C", "X"]
-Precip = Literal["rain", "hail"]
+Precip = Literal[
+    "rain",
+    "hail",
+    "snow_sector",
+    "snow_rosette",
+    "snow_aggregate",
+]
 
 
 class ComputeRequest(BaseModel):
@@ -37,6 +43,12 @@ class NDCurve(BaseModel):
     n_d: list[float]
 
 
+class Assumptions(BaseModel):
+    title: str
+    bullets: list[str]
+
+
 class ComputeResponse(BaseModel):
     metrics: Metrics
     nd: NDCurve
+    assumptions: Assumptions

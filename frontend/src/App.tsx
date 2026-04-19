@@ -4,6 +4,7 @@ import { IconAlertCircle } from '@tabler/icons-react'
 import { Controls, type ControlsState } from './components/Controls'
 import { PSDPlot } from './components/PSDPlot'
 import { MetricsTable } from './components/MetricsTable'
+import { Assumptions } from './components/Assumptions'
 import { compute } from './api'
 import type { ComputeResponse } from './types'
 
@@ -89,6 +90,7 @@ export default function App() {
               )}
               <PSDPlot nd={result?.nd ?? null} />
               <MetricsTable metrics={result?.metrics ?? null} />
+              <Assumptions data={result?.assumptions ?? null} />
             </Stack>
           </Grid.Col>
         </Grid>

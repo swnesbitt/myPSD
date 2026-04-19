@@ -1,8 +1,10 @@
 """PSD-integrated polarimetric radar metrics via rustmatrix.
 
-Mirrors the scatter path from bokeh-myPSD's bokeh-app/main.py, ported to
-rustmatrix. The scatter table is the expensive step; cache it keyed by
-(band, precip, canting_std) so that Dm / log_Nw / mu sweeps are cheap.
+Scatter-table build is the expensive step; cache it keyed by
+(band, precip, canting_std). Dm / log_Nw / mu sweeps reuse the same table.
+
+Snow conversions (sector snowflakes, bullet rosettes, rosette aggregates)
+follow Honeyager (2013), FSU M.S. thesis — see `snow.py` for details.
 """
 
 from __future__ import annotations
@@ -17,7 +19,8 @@ from rustmatrix.psd import GammaPSD, PSDIntegrator
 from rustmatrix.scatter import ldr as scatter_ldr
 from rustmatrix.scatterer import Scatterer
 
-from .models import Band, ComputeResponse, Metrics, NDCurve, Precip
+from .models import Assumptions, Band, ComputeResponse, Metrics, NDCurve, Precip
+from .snow import SNOW_TYPES, snow_fixed_m, snow_m_func
 
 
 _BAND_WL = {"S": tmatrix_aux.wl_S, "C": tmatrix_aux.wl_C, "X": tmatrix_aux.wl_X}
@@ -52,32 +55,54 @@ def _rain_axis_ratio(d: float) -> float:
     return 1.0 / _drop_ar(d)
 
 
-def _hail_axis_ratio(d: float) -> float:
+def _hail_axis_ratio(_d: float) -> float:
     return 0.99
 
 
-@lru_cache(maxsize=24)
+def _constant_axis_ratio(value: float):
+    def _f(_d: float) -> float:
+        return value
+
+    return _f
+
+
+@lru_cache(maxsize=64)
 def _build_scatterer(band: Band, precip: Precip, canting_std_deg: float) -> Scatterer:
     """Build a scatterer and pre-compute its PSD scatter table.
 
     Result is cached across requests because the table build dominates latency.
-    A Scatterer holds mutable PSD state, but we rewrite `scatterer.psd` on
-    every compute() call, so reuse is safe as long as geometry / canting /
-    refractive index don't change — which is exactly what this key covers.
     """
     wavelength = _BAND_WL[band]
-    m = _HAIL_M if precip == "hail" else refractive.m_w_10C[wavelength]
+
+    is_snow = precip in SNOW_TYPES
+    if is_snow:
+        snow_type = SNOW_TYPES[precip]
+        m = snow_fixed_m(snow_type, wavelength)
+        axis_ratio_fn = _constant_axis_ratio(snow_type.axis_ratio)
+        d_max = snow_type.d_max
+    elif precip == "hail":
+        m = _HAIL_M
+        axis_ratio_fn = _hail_axis_ratio
+        d_max = 10.0
+    else:  # rain
+        m = refractive.m_w_10C[wavelength]
+        axis_ratio_fn = _rain_axis_ratio
+        d_max = 10.0
 
     scatterer = Scatterer(wavelength=wavelength, m=m)
     scatterer.psd_integrator = PSDIntegrator()
-    scatterer.psd_integrator.axis_ratio_func = (
-        _rain_axis_ratio if precip == "rain" else _hail_axis_ratio
-    )
-    scatterer.psd_integrator.D_max = 10.0
+    scatterer.psd_integrator.axis_ratio_func = axis_ratio_fn
+    scatterer.psd_integrator.D_max = d_max
     scatterer.psd_integrator.geometries = (
         tmatrix_aux.geom_horiz_back,
         tmatrix_aux.geom_horiz_forw,
     )
+
+    if is_snow:
+        # Per-D effective refractive index from Maxwell-Garnett mixing.
+        scatterer.psd_integrator.m_func = snow_m_func(
+            SNOW_TYPES[precip], wavelength
+        )
 
     if canting_std_deg > 0.0:
         scatterer.or_pdf = orientation.gaussian_pdf(canting_std_deg)
@@ -96,6 +121,36 @@ def _nd(d_mm: np.ndarray, dm: float, log_nw: float, mu: float) -> np.ndarray:
         * (d_mm / dm) ** mu
         * np.exp(-(4.0 + mu) * (d_mm / dm))
     )
+
+
+_RAIN_ASSUMPTIONS = Assumptions(
+    title="Rain",
+    bullets=[
+        "Oblate raindrops with Beard & Chuang (1987) equilibrium axis ratio.",
+        "Refractive index of liquid water at 10 °C (rustmatrix.refractive.m_w_10C).",
+        "PSD integrated out to D_max = 10 mm.",
+        "Testud et al. (2001) normalized-gamma PSD: N(D) = N_w·f(μ)·(D/D_m)^μ·exp[-(4+μ)D/D_m].",
+    ],
+)
+
+_HAIL_ASSUMPTIONS = Assumptions(
+    title="Hail",
+    bullets=[
+        "Near-spherical dry hail (axis ratio 0.99).",
+        "Fixed refractive index m = 1.78 + 7.9×10⁻⁴ i (solid ice at 0 °C).",
+        "PSD integrated out to D_max = 10 mm.",
+        "No melting or wet-ice handling — treats hail as solid ice.",
+    ],
+)
+
+
+def _assumptions_for(precip: Precip) -> Assumptions:
+    if precip == "rain":
+        return _RAIN_ASSUMPTIONS
+    if precip == "hail":
+        return _HAIL_ASSUMPTIONS
+    snow_type = SNOW_TYPES[precip]
+    return Assumptions(title=snow_type.label, bullets=list(snow_type.assumptions))
 
 
 def compute(
@@ -128,6 +183,9 @@ def compute(
 
     f_u = (6.0 / 4.0**4) * ((4.0 + mu) ** (mu + 4.0)) / gamma_fn(mu + 4.0)
     nt = nw * f_u * gamma_fn(mu + 1.0) * dm / ((4.0 + mu) ** (mu + 1.0))
+    # Nominal density for LWC/IWC: rain uses 1.0 g/cm^3; all ice variants use
+    # pure-ice density (917 kg/m^3). For snow, this yields an equivalent IWC
+    # assuming the Dm/Nw are specified in the ice-equivalent sense.
     density = 1000.0 if precip == "rain" else 917.0
     lwc = (np.pi * nw * dm**4) / (4.0**4 * density)
 
@@ -148,4 +206,6 @@ def compute(
     n_d = _nd(_D_PLOT, dm, log_nw, mu)
     nd = NDCurve(d_mm=_D_PLOT.tolist(), n_d=n_d.tolist())
 
-    return ComputeResponse(metrics=metrics, nd=nd)
+    return ComputeResponse(
+        metrics=metrics, nd=nd, assumptions=_assumptions_for(precip)
+    )
