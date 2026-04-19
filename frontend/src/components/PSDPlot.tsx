@@ -1,5 +1,4 @@
-// Use the lean 'basic' Plotly bundle (~1 MB instead of ~3 MB) — a line plot
-// doesn't need 3D, maps, or statistical chart types.
+import { Paper } from '@mantine/core'
 import createPlotlyComponent from 'react-plotly.js/factory'
 // @ts-expect-error plotly.js-basic-dist-min has no types
 import Plotly from 'plotly.js-basic-dist-min'
@@ -13,19 +12,24 @@ interface Props {
 
 export function PSDPlot({ nd }: Props) {
   const data = nd
-    ? [{
-        x: nd.d_mm,
-        y: nd.n_d,
-        type: 'scatter' as const,
-        mode: 'lines' as const,
-        line: { color: '#1f4e79', width: 3 },
-        name: 'N(D)',
-        hovertemplate: 'D = %{x:.2f} mm<br>N(D) = %{y:.3e} mm⁻¹ m⁻³<extra></extra>',
-      }]
+    ? [
+        {
+          x: nd.d_mm,
+          y: nd.n_d,
+          type: 'scatter' as const,
+          mode: 'lines' as const,
+          line: { color: '#1f4e79', width: 3 },
+          fill: 'tozeroy' as const,
+          fillcolor: 'rgba(78, 168, 220, 0.15)',
+          name: 'N(D)',
+          hovertemplate:
+            'D = %{x:.2f} mm<br>N(D) = %{y:.3e} mm⁻¹ m⁻³<extra></extra>',
+        },
+      ]
     : []
 
   return (
-    <div className="panel">
+    <Paper withBorder p="md" radius="md" shadow="xs">
       <Plot
         data={data}
         layout={{
@@ -46,6 +50,6 @@ export function PSDPlot({ nd }: Props) {
         style={{ width: '100%' }}
         useResizeHandler
       />
-    </div>
+    </Paper>
   )
 }

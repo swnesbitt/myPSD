@@ -1,3 +1,4 @@
+import { Paper, Select, Slider, Stack, Text, Group } from '@mantine/core'
 import type { Band, Precip } from '../types'
 
 export interface ControlsState {
@@ -14,94 +15,142 @@ interface Props {
   onChange: (next: ControlsState) => void
 }
 
+function SliderField({
+  label,
+  value,
+  min,
+  max,
+  step,
+  decimals,
+  marks,
+  onChange,
+}: {
+  label: React.ReactNode
+  value: number
+  min: number
+  max: number
+  step: number
+  decimals: number
+  marks?: { value: number; label?: string }[]
+  onChange: (v: number) => void
+}) {
+  return (
+    <div>
+      <Group justify="space-between" mb={4} gap="xs">
+        <Text size="sm" fw={500} c="dimmed">
+          {label}
+        </Text>
+        <Text size="sm" fw={600} ff="monospace">
+          {value.toFixed(decimals)}
+        </Text>
+      </Group>
+      <Slider
+        value={value}
+        onChange={onChange}
+        min={min}
+        max={max}
+        step={step}
+        marks={marks}
+        color="dropCyan"
+        size="md"
+        label={null}
+      />
+    </div>
+  )
+}
+
 export function Controls({ value, onChange }: Props) {
   const set = <K extends keyof ControlsState>(k: K, v: ControlsState[K]) =>
     onChange({ ...value, [k]: v })
 
   return (
-    <div className="panel controls">
-      <div className="field">
-        <label>
-          Precip type
-        </label>
-        <select
+    <Paper withBorder p="md" radius="md" shadow="xs">
+      <Stack gap="lg">
+        <Select
+          label="Precipitation type"
           value={value.precip}
-          onChange={(e) => set('precip', e.target.value as Precip)}
-        >
-          <option value="rain">rain</option>
-          <option value="hail">hail</option>
-        </select>
-      </div>
+          onChange={(v) => v && set('precip', v as Precip)}
+          data={[
+            { value: 'rain', label: 'Rain' },
+            { value: 'hail', label: 'Hail' },
+          ]}
+          allowDeselect={false}
+        />
 
-      <div className="field">
-        <label>
-          Wavelength
-        </label>
-        <select
+        <Select
+          label="Radar wavelength"
           value={value.band}
-          onChange={(e) => set('band', e.target.value as Band)}
-        >
-          <option value="S">S band (10 cm)</option>
-          <option value="C">C band (5 cm)</option>
-          <option value="X">X band (3 cm)</option>
-        </select>
-      </div>
+          onChange={(v) => v && set('band', v as Band)}
+          data={[
+            { value: 'S', label: 'S band (10 cm)' },
+            { value: 'C', label: 'C band (5 cm)' },
+            { value: 'X', label: 'X band (3 cm)' },
+          ]}
+          allowDeselect={false}
+        />
 
-      <div className="field">
-        <label>
-          Dm (mm) <span className="value">{value.dm.toFixed(1)}</span>
-        </label>
-        <input
-          type="range"
+        <SliderField
+          label={<>D<sub>m</sub> (mm)</>}
+          value={value.dm}
           min={0.5}
           max={8.0}
           step={0.1}
-          value={value.dm}
-          onChange={(e) => set('dm', parseFloat(e.target.value))}
+          decimals={1}
+          marks={[
+            { value: 1, label: '1' },
+            { value: 3, label: '3' },
+            { value: 5, label: '5' },
+            { value: 7, label: '7' },
+          ]}
+          onChange={(v) => set('dm', v)}
         />
-      </div>
 
-      <div className="field">
-        <label>
-          log₁₀ Nw (mm⁻¹ m⁻³) <span className="value">{value.logNw.toFixed(2)}</span>
-        </label>
-        <input
-          type="range"
+        <SliderField
+          label={<>log<sub>10</sub> N<sub>w</sub> (mm⁻¹ m⁻³)</>}
+          value={value.logNw}
           min={0.5}
           max={6.0}
           step={0.1}
-          value={value.logNw}
-          onChange={(e) => set('logNw', parseFloat(e.target.value))}
+          decimals={2}
+          marks={[
+            { value: 1, label: '1' },
+            { value: 3, label: '3' },
+            { value: 5, label: '5' },
+          ]}
+          onChange={(v) => set('logNw', v)}
         />
-      </div>
 
-      <div className="field">
-        <label>
-          μ (shape) <span className="value">{value.mu.toFixed(0)}</span>
-        </label>
-        <input
-          type="range"
+        <SliderField
+          label={<>μ (shape)</>}
+          value={value.mu}
           min={-3}
           max={80}
           step={1}
-          value={value.mu}
-          onChange={(e) => set('mu', parseFloat(e.target.value))}
+          decimals={0}
+          marks={[
+            { value: 0, label: '0' },
+            { value: 20, label: '20' },
+            { value: 40, label: '40' },
+            { value: 60, label: '60' },
+          ]}
+          onChange={(v) => set('mu', v)}
         />
-      </div>
 
-      <div className="field">
-        <label>
-          Canting σ (deg) <span className="value">{value.cantingStd.toFixed(0)}</span>
-        </label>
-        <input
-          type="range"
+        <SliderField
+          label={<>Canting σ (deg)</>}
+          value={value.cantingStd}
           min={0}
           max={40}
           step={4}
-          value={value.cantingStd}
-          onChange={(e) => set('cantingStd', parseFloat(e.target.value))}
+          decimals={0}
+          marks={[
+            { value: 0, label: '0' },
+            { value: 20, label: '20' },
+            { value: 40, label: '40' },
+          ]}
+          onChange={(v) => set('cantingStd', v)}
         />
-      </div>
-    </div>
+      </Stack>
+    </Paper>
   )
 }

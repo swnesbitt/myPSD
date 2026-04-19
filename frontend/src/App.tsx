@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
+import { Alert, AppShell, Grid, Stack, Text } from '@mantine/core'
+import { IconAlertCircle } from '@tabler/icons-react'
 import { Controls, type ControlsState } from './components/Controls'
 import { PSDPlot } from './components/PSDPlot'
 import { MetricsTable } from './components/MetricsTable'
@@ -21,7 +23,6 @@ export default function App() {
   const abortRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
-    // Debounce + abort-in-flight so slider drags don't flood the backend.
     const controller = new AbortController()
     abortRef.current?.abort()
     abortRef.current = controller
@@ -54,31 +55,68 @@ export default function App() {
   }, [state])
 
   return (
-    <div className="app">
-      <header className="header">
+    <AppShell header={{ height: 80 }} padding="lg">
+      <AppShell.Header className="header">
         <img src="/logo.svg" alt="myPSD" className="brand" />
         <div className="subtitle">
-          Normalized gamma PSD · T-matrix via rustmatrix
+          <Text size="sm" c="dimmed" lh={1.4}>
+            Normalized gamma PSD · T-matrix via rustmatrix
+          </Text>
         </div>
-        <img src="/climas-icon.png" alt="CLIMAS — University of Illinois" className="climas" />
-      </header>
+        <img
+          src="/climas-icon.png"
+          alt="CLIMAS — University of Illinois"
+          className="climas"
+        />
+      </AppShell.Header>
 
-      <main className="main">
-        <Controls value={state} onChange={setState} />
-        <div className="right">
-          {error && <div className="error">{error}</div>}
-          <PSDPlot nd={result?.nd ?? null} />
-          <MetricsTable metrics={result?.metrics ?? null} />
-        </div>
-      </main>
+      <AppShell.Main>
+        <Grid gap="lg" align="flex-start">
+          <Grid.Col span={{ base: 12, md: 4, lg: 3 }}>
+            <Controls value={state} onChange={setState} />
+          </Grid.Col>
+          <Grid.Col span={{ base: 12, md: 8, lg: 9 }}>
+            <Stack gap="lg">
+              {error && (
+                <Alert
+                  color="red"
+                  icon={<IconAlertCircle size={18} />}
+                  title="Compute error"
+                  variant="light"
+                >
+                  {error}
+                </Alert>
+              )}
+              <PSDPlot nd={result?.nd ?? null} />
+              <MetricsTable metrics={result?.metrics ?? null} />
+            </Stack>
+          </Grid.Col>
+        </Grid>
 
-      <footer className="footer">
-        Based on{' '}
-        <a href="https://github.com/swnesbitt/bokeh-myPSD">bokeh-myPSD</a> ·
-        Scattering by{' '}
-        <a href="https://github.com/swnesbitt/rustmatrix">rustmatrix</a> ·
-        Source at <a href="https://github.com/swnesbitt/myPSD">swnesbitt/myPSD</a>
-      </footer>
-    </div>
+        <Text size="xs" c="dimmed" mt="xl" ta="center">
+          Based on{' '}
+          <a
+            href="https://github.com/swnesbitt/bokeh-myPSD"
+            style={{ color: 'var(--mantine-color-climasBlue-6)' }}
+          >
+            bokeh-myPSD
+          </a>{' '}
+          · Scattering by{' '}
+          <a
+            href="https://github.com/swnesbitt/rustmatrix"
+            style={{ color: 'var(--mantine-color-climasBlue-6)' }}
+          >
+            rustmatrix
+          </a>{' '}
+          · Source at{' '}
+          <a
+            href="https://github.com/swnesbitt/myPSD"
+            style={{ color: 'var(--mantine-color-climasBlue-6)' }}
+          >
+            swnesbitt/myPSD
+          </a>
+        </Text>
+      </AppShell.Main>
+    </AppShell>
   )
 }
