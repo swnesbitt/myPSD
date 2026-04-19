@@ -13,7 +13,7 @@
 # ---------- stage 1: build the SPA ----------
 FROM node:20-alpine AS spa
 WORKDIR /spa
-COPY frontend/package.json frontend/package-lock.json* ./
+COPY frontend/package.json frontend/package-lock.json* frontend/.npmrc ./
 RUN npm ci --no-audit --no-fund
 COPY frontend/ ./
 # Vite outDir in our config points to ../backend/app/static — we don't want
