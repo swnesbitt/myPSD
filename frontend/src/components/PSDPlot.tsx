@@ -70,7 +70,7 @@ export function PSDPlot({ nd }: Props) {
           },
           yaxis: {
             title: {
-              text: 'N(D) (mm⁻¹ m⁻³)',
+              text: 'log₁₀ N(D) (mm⁻¹ m⁻³)',
               font: { size: 16 },
             },
             tickfont: { size: 14 },
@@ -90,23 +90,23 @@ export function PSDPlot({ nd }: Props) {
       <Group justify="space-between" mt="xs" gap="lg" wrap="wrap">
         <Group gap="xs" align="center">
           <Text size="xs" c="dimmed" fw={500}>
-            x (mm):
-          </Text>
-          {rangeInput(xmin, setXmin, 1)}
-          <Text size="xs" c="dimmed">
-            to
-          </Text>
-          {rangeInput(xmax, setXmax, 1)}
-        </Group>
-        <Group gap="xs" align="center">
-          <Text size="xs" c="dimmed" fw={500}>
-            y (log₁₀):
+            log₁₀ N(D):
           </Text>
           {rangeInput(ymin, setYmin, 1)}
           <Text size="xs" c="dimmed">
             to
           </Text>
           {rangeInput(ymax, setYmax, 1)}
+        </Group>
+        <Group gap="xs" align="center">
+          <Text size="xs" c="dimmed" fw={500}>
+            D (mm):
+          </Text>
+          {rangeInput(xmin, setXmin, 1)}
+          <Text size="xs" c="dimmed">
+            to
+          </Text>
+          {rangeInput(xmax, setXmax, 1)}
         </Group>
       </Group>
     </Paper>
