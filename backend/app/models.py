@@ -16,7 +16,7 @@ Precip = Literal[
 
 
 class ComputeRequest(BaseModel):
-    dm: float = Field(ge=0.1, le=8.0, description="Mass-weighted mean diameter [mm]")
+    dm: float = Field(ge=0.1, le=20.0, description="Mass-weighted mean diameter [mm]")
     log_nw: float = Field(ge=0.5, le=6.0, description="log10(Nw) [mm^-1 m^-3]")
     mu: float = Field(ge=-3.0, le=80.0, description="Gamma shape parameter")
     band: Band = "S"
