@@ -1,5 +1,6 @@
-import { Paper, Select, Slider, Stack, Text, Group } from '@mantine/core'
+import { Button, Paper, Select, Slider, Stack, Text, Group, Title } from '@mantine/core'
 import type { Band, Precip } from '../types'
+import { PRESETS, matchPreset } from '../presets'
 
 export interface ControlsState {
   dm: number
@@ -144,7 +145,7 @@ export function Controls({ value, onChange }: Props) {
           value={value.cantingStd}
           min={0}
           max={40}
-          step={4}
+          step={1}
           decimals={0}
           marks={[
             { value: 0, label: '0' },
@@ -154,6 +155,40 @@ export function Controls({ value, onChange }: Props) {
           onChange={(v) => set('cantingStd', v)}
         />
       </Stack>
+
+      <Paper withBorder p="sm" radius="md" mt="lg" bg="gray.0">
+        <Title order={5} mb="xs">
+          Presets
+        </Title>
+        <Stack gap={6}>
+          {PRESETS.map((p) => {
+            const active = matchPreset(value) === p.key
+            return (
+              <Button
+                key={p.key}
+                variant={active ? 'filled' : 'light'}
+                color="climasBlue"
+                size="sm"
+                fullWidth
+                styles={{
+                  root: { height: 'auto', paddingTop: 6, paddingBottom: 6 },
+                  label: { whiteSpace: 'normal' },
+                }}
+                onClick={() => onChange({ ...value, ...p.values })}
+              >
+                <Stack gap={0} align="center">
+                  <Text size="sm" fw={600}>
+                    {p.label}
+                  </Text>
+                  <Text size="xs" c={active ? 'white' : 'dimmed'} fs="italic">
+                    {p.source}
+                  </Text>
+                </Stack>
+              </Button>
+            )
+          })}
+        </Stack>
+      </Paper>
     </Paper>
   )
 }
