@@ -56,12 +56,28 @@ export default function App() {
   }, [state])
 
   return (
-    <AppShell header={{ height: 80 }} padding="lg">
+    <AppShell header={{ height: 100 }} padding="lg">
       <AppShell.Header className="header">
         <img src="/logo.svg" alt="myPSD" className="brand" />
         <div className="subtitle">
           <Text size="sm" c="dimmed" lh={1.4}>
             Normalized gamma PSD · T-matrix via rustmatrix
+          </Text>
+          <Text size="xs" c="dimmed" lh={1.4}>
+            A tool accompanying{' '}
+            <a
+              href="https://courses.illinois.edu/schedule/terms/ATMS/410"
+              style={{ color: 'var(--mantine-color-climasBlue-6)' }}
+            >
+              ATMS 410
+            </a>{' '}
+            at UIUC and{' '}
+            <a
+              href="https://onlinelibrary.wiley.com/doi/book/10.1002/9781118432662"
+              style={{ color: 'var(--mantine-color-climasBlue-6)' }}
+            >
+              Radar Meteorology: A First Course
+            </a>
           </Text>
         </div>
         <img
