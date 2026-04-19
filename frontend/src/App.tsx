@@ -59,6 +59,17 @@ export default function App() {
     <AppShell header={{ height: 100 }} padding="lg">
       <AppShell.Header className="header">
         <img src="/logo.svg" alt="myPSD" className="brand" />
+        <a
+          href="https://onlinelibrary.wiley.com/doi/book/10.1002/9781118432662"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img
+            src="/book-cover.png"
+            alt="Radar Meteorology: A First Course — Rauber & Nesbitt"
+            className="book"
+          />
+        </a>
         <div className="subtitle">
           <Text size="sm" c="dimmed" lh={1.4}>
             Normalized gamma PSD · T-matrix via rustmatrix
