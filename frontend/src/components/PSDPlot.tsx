@@ -23,15 +23,15 @@ export function PSDPlot({ nd }: Props) {
     ? [
         {
           x: nd.d_mm,
-          y: nd.n_d,
+          y: nd.n_d.map((v) => (v > 0 ? Math.log10(v) : null)),
           type: 'scatter' as const,
           mode: 'lines' as const,
           line: { color: '#1f4e79', width: 3 },
           fill: 'tozeroy' as const,
           fillcolor: 'rgba(78, 168, 220, 0.15)',
-          name: 'N(D)',
+          name: 'log₁₀ N(D)',
           hovertemplate:
-            'D = %{x:.2f} mm<br>N(D) = %{y:.3e} mm⁻¹ m⁻³<extra></extra>',
+            'D = %{x:.2f} mm<br>log₁₀ N(D) = %{y:.2f}<extra></extra>',
         },
       ]
     : []
@@ -74,7 +74,6 @@ export function PSDPlot({ nd }: Props) {
               font: { size: 16 },
             },
             tickfont: { size: 14 },
-            type: 'log',
             range: [ymin, ymax],
           },
           margin: { t: 50, b: 60, l: 80, r: 20 },
