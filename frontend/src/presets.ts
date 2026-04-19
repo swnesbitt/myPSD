@@ -41,8 +41,8 @@ export const PRESETS: Preset[] = [
   {
     key: 'snow_aggregates_heavy',
     label: 'Heavy snow aggregates',
-    source: 'Heymsfield 2008; Borque 2019 μ–Dm',
-    values: { dm: 4.0, logNw: 4.3, mu: -1, cantingStd: 12, precip: 'snow_aggregate' },
+    source: 'Heymsfield 2008 (exponential PSD)',
+    values: { dm: 5.0, logNw: 3.2, mu: 0, cantingStd: 12, precip: 'snow_aggregate' },
   },
   {
     key: 'hail_70dbz',
