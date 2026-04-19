@@ -124,7 +124,7 @@ export function MetricsTable({ metrics }: Props) {
   return (
     <Paper withBorder p="md" radius="md" shadow="xs">
       <Title order={4} mb="sm">
-        Polarimetric metrics
+        T-matrix scattering results
       </Title>
       {metrics ? (
         <Table striped highlightOnHover withRowBorders={false} verticalSpacing={6}>
