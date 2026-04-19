@@ -22,7 +22,7 @@ export const PRESETS: Preset[] = [
   },
   {
     key: 'convective_continental',
-    label: 'Heavy continental convective',
+    label: 'Heavy continental convective rain',
     source: 'Bringi et al. 2003 (continental centroid)',
     values: { dm: 2.3, logNw: 4.0, mu: 4, cantingStd: 8, precip: 'rain' },
   },
@@ -46,7 +46,7 @@ export const PRESETS: Preset[] = [
   },
   {
     key: 'hail_70dbz',
-    label: '70 dBZ hail core',
+    label: '70+ dBZ hail core',
     source: 'Ryzhkov et al. 2013 JAMC',
     values: { dm: 8.0, logNw: 4.0, mu: 0, cantingStd: 30, precip: 'hail' },
   },
