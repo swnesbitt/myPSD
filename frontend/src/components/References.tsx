@@ -44,12 +44,6 @@ const REFS: Array<{ key: string; text: string; url?: string }> = [
     url: 'https://doi.org/10.1175/JAMC-D-18-0203.1',
   },
   {
-    key: 'ding2020',
-    text:
-      'Ding, S., G. M. McFarquhar, S. W. Nesbitt, R. J. Chase, M. R. Poellot, and H. Wang, 2020: Dependence of mass–dimensional relationships on median mass diameter. Atmosphere, 11, 756.',
-    url: 'https://doi.org/10.3390/atmos11070756',
-  },
-  {
     key: 'honeyager2013',
     text:
       'Honeyager, R., 2013: Investigating the use of the T-matrix method as a proxy for the discrete dipole approximation for snowflake scattering computations. M.S. thesis, Florida State University.',

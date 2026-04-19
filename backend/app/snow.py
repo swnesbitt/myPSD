@@ -32,21 +32,15 @@ class SnowType:
     assumptions: tuple[str, ...]
 
 
-def _ding_density(d_mm: float) -> float:
-    """Ding et al. (2020) m–D for snow aggregates in the large-Dmm regime.
-
-    Fig. 2 best-estimate (a, b) at Dmm,hy ≈ 4 mm: a = 0.005 g, b = 2.0 in
-    m = a·(D/1 cm)^b. Converting to bulk density for a spherical envelope
-    (V = π D³/6) gives ρ(D) = 6a/(π·D^(3−b)) = 0.00955/D[cm] = 0.0955/D[mm]
-    in g/cm³. Relative to Brandes et al. (2007) this reduces aggregate mass
-    at D > 3 mm — the regime Ding et al. identify as HY04 overestimating Z.
+def _brandes_density(d_mm: float) -> float:
+    """Brandes et al. (2007) size-density for snow aggregates: rho = 0.178 D^-0.922.
 
     Clamped to [0.005, ice_density] g/cm^3 so Maxwell-Garnett stays bounded
     at very small/large D.
     """
     if d_mm <= 0.0:
         return 0.005
-    rho = 0.0955 / d_mm
+    rho = 0.178 * d_mm ** (-0.922)
     if rho > ice_density:
         return ice_density
     if rho < 0.005:
@@ -96,22 +90,19 @@ SNOW_TYPES: dict[str, SnowType] = {
         label="Bullet-rosette aggregate",
         axis_ratio=1.25,  # 1/0.8 (oblate aggregate, Garrett et al. 2012)
         density=None,
-        density_fn=_ding_density,
+        density_fn=_brandes_density,
         d_max=15.0,
         assumptions=(
             "Shape: oblate spheroid, axial ratio 0.8 (Garrett et al. 2012; "
             "Honeyager §2.2).",
-            "Size-dependent bulk density from Ding et al. (2020) Fig. 2 best "
-            "estimate at Dmm ≈ 4 mm: m = 0.005·(D/1 cm)² ⇒ "
-            "ρ(D) = 0.0955/D g cm⁻³ with D in mm.",
+            "Size-dependent bulk density from Brandes et al. (2007): "
+            "ρ(D) = 0.178·D^(-0.922) g cm⁻³, with D in mm.",
             "Refractive index is computed per-D via Maxwell-Garnett ice-in-air "
             "(PSDIntegrator.m_func), so each scatter-table entry uses the "
             "correct effective medium for its diameter.",
-            "Valid D ≈ 1–12 mm; Ding et al. (2020) specifically targets the "
-            "3–6 mm aggregate regime where constant m–D relations "
-            "(e.g. HY04, Brandes 2007) overestimate mass.",
-            "Source: Ding et al. (2020), Atmosphere, 11, 756; Honeyager (2013), "
-            "§2.2 & §3.7.3.",
+            "Valid D ≈ 1–12 mm (Nowell 2010/2013 aggregate database).",
+            "Source: Honeyager (2013), §2.2 & §3.7.3; Brandes et al. (2007); "
+            "Heymsfield et al. (2004).",
         ),
     ),
 }
