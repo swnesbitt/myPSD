@@ -47,8 +47,8 @@ export const PRESETS: Preset[] = [
   {
     key: 'hail_70dbz',
     label: '70+ dBZ hail core',
-    source: 'Ryzhkov et al. 2013',
-    values: { dm: 8.0, logNw: 4.0, mu: 0, cantingStd: 30, precip: 'hail' },
+    source: 'Cheng & English 1983; Ulbrich & Atlas 1982',
+    values: { dm: 15.0, logNw: 1.0, mu: 0, cantingStd: 30, precip: 'hail' },
   },
 ]
 

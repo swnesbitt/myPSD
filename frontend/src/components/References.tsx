@@ -74,6 +74,18 @@ const REFS: Array<{ key: string; text: string; url?: string }> = [
     url: 'https://doi.org/10.5194/amt-5-2625-2012',
   },
   {
+    key: 'ulbrich1982',
+    text:
+      'Ulbrich, C. W., and D. Atlas, 1982: Hail parameter relations: A comprehensive digest. J. Appl. Meteor., 21, 22–43.',
+    url: 'https://doi.org/10.1175/1520-0450(1982)021%3C0022:HPRACD%3E2.0.CO;2',
+  },
+  {
+    key: 'cheng1983',
+    text:
+      'Cheng, L., and M. English, 1983: A relationship between hailstone concentration and size. J. Atmos. Sci., 40, 204–213.',
+    url: 'https://doi.org/10.1175/1520-0469(1983)040%3C0204:ARBHCA%3E2.0.CO;2',
+  },
+  {
     key: 'ryzhkov2013',
     text:
       'Ryzhkov, A. V., M. R. Kumjian, S. M. Ganson, and P. Zhang, 2013: Polarimetric radar characteristics of melting hail. Part II: Practical implications. J. Appl. Meteor. Climatol., 52, 2871–2886.',

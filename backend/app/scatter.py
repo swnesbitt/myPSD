@@ -83,7 +83,7 @@ def _build_scatterer(band: Band, precip: Precip, canting_std_deg: float) -> Scat
     elif precip == "hail":
         m = _HAIL_M
         axis_ratio_fn = _hail_axis_ratio
-        d_max = 10.0
+        d_max = 75.0
     else:  # rain
         m = refractive.m_w_10C[wavelength]
         axis_ratio_fn = _rain_axis_ratio
@@ -138,7 +138,7 @@ _HAIL_ASSUMPTIONS = Assumptions(
     bullets=[
         "Near-spherical dry hail (axis ratio 0.99).",
         "Fixed refractive index m = 1.78 + 7.9×10⁻⁴ i (solid ice at 0 °C).",
-        "PSD integrated out to D_max = 10 mm.",
+        "PSD integrated out to D_max = 75 mm (giant-hail tail).",
         "No melting or wet-ice handling — treats hail as solid ice.",
     ],
 )

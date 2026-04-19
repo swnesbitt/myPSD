@@ -47,7 +47,7 @@ interface Props {
   nd: NDCurve | null
 }
 
-const DEFAULTS = { xmin: 0, xmax: 10, ymin: -1, ymax: 6 }
+const DEFAULTS = { xmin: 0, xmax: 20, ymin: -1, ymax: 6 }
 
 export function PSDPlot({ nd }: Props) {
   const [xmin, setXmin] = useState<number>(DEFAULTS.xmin)
