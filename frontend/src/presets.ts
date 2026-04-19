@@ -30,7 +30,7 @@ export const PRESETS: Preset[] = [
     key: 'convective_maritime',
     label: 'Heavy maritime warm rain',
     source: 'Bringi et al. 2003 (maritime-like)',
-    values: { dm: 1.5, logNw: 4.5, mu: 3, cantingStd: 6, precip: 'rain' },
+    values: { dm: 1.5, logNw: 4.75, mu: 3, cantingStd: 6, precip: 'rain' },
   },
   {
     key: 'snow_sector_light',
