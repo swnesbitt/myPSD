@@ -26,10 +26,16 @@ const REFS: Array<{ key: string; text: string; url?: string }> = [
     url: 'https://doi.org/10.1175/JAM2489.1',
   },
   {
+    key: 'heymsfield2007',
+    text:
+      'Heymsfield, A. J., A. Bansemer, and C. H. Twohy, 2007: Refinements to ice particle mass dimensional and terminal velocity relationships for ice clouds. Part I: Temperature dependence. J. Atmos. Sci., 64, 1047–1067.',
+    url: 'https://doi.org/10.1175/JAS3890.1',
+  },
+  {
     key: 'heymsfield2008',
     text:
-      'Heymsfield, A. J., A. Bansemer, and C. H. Twohy, 2008: Refinements to ice particle mass dimensional and terminal velocity relationships for ice clouds. J. Atmos. Sci., 64, 1047–1067.',
-    url: 'https://doi.org/10.1175/JAS3900.1',
+      'Heymsfield, A. J., A. Bansemer, C. Schmitt, C. Twohy, and M. R. Poellot, 2008: Exponential size distributions for snow. J. Atmos. Sci., 65, 4017–4031.',
+    url: 'https://doi.org/10.1175/2008JAS2583.1',
   },
   {
     key: 'honeyager2013',
