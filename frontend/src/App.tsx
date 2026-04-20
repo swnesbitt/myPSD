@@ -62,7 +62,15 @@ export default function App() {
         <img src="/logo.svg" alt="myPSD" className="brand" />
         <div className="subtitle">
           <Text size="sm" c="dimmed" lh={1.4}>
-            Normalized gamma PSD · T-matrix via rustmatrix
+            Normalized gamma PSD · T-matrix via{' '}
+            <a
+              href="https://github.com/swnesbitt/rustmatrix"
+              target="_blank"
+              rel="noreferrer"
+              style={{ color: 'var(--mantine-color-climasBlue-6)' }}
+            >
+              rustmatrix
+            </a>
           </Text>
           <Text size="xs" c="dimmed" lh={1.4}>
             A tool accompanying{' '}
