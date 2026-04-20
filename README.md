@@ -1,13 +1,3 @@
----
-title: myPSD
-emoji: 🌧️
-colorFrom: blue
-colorTo: indigo
-sdk: docker
-app_port: 7860
-pinned: false
----
-
 <p align="center">
   <img src="assets/logo.svg" alt="myPSD" width="640" />
 </p>
