@@ -46,8 +46,8 @@ const REFS: Array<{ key: string; text: string; url?: string }> = [
   {
     key: 'honeyager2013',
     text:
-      'Honeyager, R., 2013: Investigating the use of the T-matrix method as a proxy for the discrete dipole approximation for snowflake scattering computations. M.S. thesis, Florida State University.',
-    url: 'https://repository.lib.fsu.edu/islandora/object/fsu:183759',
+      'Honeyager, R., 2013: Investigating the Use of the T-Matrix Method as a Proxy for the Discrete Dipole Approximation. M.S. thesis, Dept. of Earth, Ocean and Atmospheric Science, Florida State University, advisor G. Liu.',
+    url: 'https://diginole.lib.fsu.edu/islandora/object/fsu:183759',
   },
   {
     key: 'liu2004',

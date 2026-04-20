@@ -35,13 +35,13 @@ export const PRESETS: Preset[] = [
   {
     key: 'snow_sector_light',
     label: 'Light sector-plate snow',
-    source: 'Heymsfield 2008; Borque 2019 μ–Dm',
+    source: 'Honeyager 2013 adaptation; Heymsfield 2008; Borque 2019 μ–Dm',
     values: { dm: 1.2, logNw: 3.0, mu: 1, cantingStd: 7, precip: 'snow_sector' },
   },
   {
     key: 'snow_aggregates_heavy',
     label: 'Heavy snow aggregates',
-    source: 'Heymsfield 2008; Borque 2019 μ–Dm',
+    source: 'Honeyager 2013 adaptation; Heymsfield 2008; Borque 2019 μ–Dm',
     values: { dm: 5.0, logNw: 3.2, mu: -1, cantingStd: 12, precip: 'snow_aggregate' },
   },
   {
