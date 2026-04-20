@@ -27,7 +27,7 @@ _BAND_WL = {"S": tmatrix_aux.wl_S, "C": tmatrix_aux.wl_C, "X": tmatrix_aux.wl_X}
 
 _HAIL_M = complex(1.78, 7.9e-4)
 
-_D_PLOT = np.arange(0.1, 20.0, 0.1)  # mm
+_D_PLOT = np.arange(0.05, 20.0, 0.05)  # mm
 
 
 def _drop_ar(d_eq: float) -> float:
@@ -181,8 +181,11 @@ def compute(
     av = float(radar.Ai(scatterer, h_pol=False))
     adr = ah - av
 
-    f_u = (6.0 / 4.0**4) * ((4.0 + mu) ** (mu + 4.0)) / gamma_fn(mu + 4.0)
-    nt = nw * f_u * gamma_fn(mu + 1.0) * dm / ((4.0 + mu) ** (mu + 1.0))
+    # Nt from numerical integration of the PSD on the plot grid, so it stays
+    # finite for μ ≤ -1 where the analytic ∫D^μ e^(-λD) dD → Γ(μ+1) diverges.
+    # Integration range matches the rendered curve (D = 0.1–20 mm).
+    n_d = _nd(_D_PLOT, dm, log_nw, mu)
+    nt = float(np.trapezoid(n_d, _D_PLOT))
     # Nominal density for LWC/IWC: rain uses 1.0 g/cm^3; all ice variants use
     # pure-ice density (917 kg/m^3). For snow, this yields an equivalent IWC
     # assuming the Dm/Nw are specified in the ice-equivalent sense.
@@ -203,7 +206,6 @@ def compute(
         lwc_g_per_m3=float(lwc),
     )
 
-    n_d = _nd(_D_PLOT, dm, log_nw, mu)
     nd = NDCurve(d_mm=_D_PLOT.tolist(), n_d=n_d.tolist())
 
     return ComputeResponse(
