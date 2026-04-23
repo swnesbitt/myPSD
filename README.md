@@ -1,3 +1,14 @@
+---
+title: myPSD
+emoji: 🌧
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+app_port: 7860
+pinned: false
+short_description: Interactive polarimetric radar PSD explorer (T-matrix via rustmatrix)
+---
+
 <p align="center">
   <img src="assets/logo.svg" alt="myPSD" width="640" />
 </p>
