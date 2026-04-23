@@ -6,7 +6,7 @@ colorTo: indigo
 sdk: docker
 app_port: 7860
 pinned: false
-short_description: Interactive polarimetric radar PSD explorer (T-matrix via rustmatrix)
+short_description: Polarimetric radar PSD explorer (T-matrix via rustmatrix)
 ---
 
 <p align="center">
