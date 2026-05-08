@@ -15,7 +15,7 @@ short_description: Polarimetric radar PSD explorer (T-matrix via rustmatrix)
 
 # myPSD — interactive polarimetric radar PSD explorer
 
-**Try it live:** [huggingface.co/spaces/snesbitt/myPSD](https://huggingface.co/spaces/snesbitt/myPSD)
+**Try it live:** [huggingface.co/spaces/snesbitt/myPSD](https://huggingface.co/spaces/snesbitt/myPSD) · **DOI:** [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20077476.svg)](https://doi.org/10.5281/zenodo.20077476)
 
 myPSD is a teaching and exploration tool that shows how the shape of a
 precipitation particle size distribution (PSD) translates into the observables
