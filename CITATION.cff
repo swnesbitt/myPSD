@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use myPSD, please cite it using the metadata below."
+type: software
+title: myPSD
+abstract: >-
+  Interactive web app for exploring polarimetric radar observables derived
+  from a normalized-gamma particle size distribution (Testud et al. 2001).
+  T-matrix scattering via rustmatrix. Accompanies ATMS 410 at UIUC and
+  Radar Meteorology: A First Course (Rauber & Nesbitt 2018).
+version: 2.0.1
+doi: 10.5281/zenodo.20077476
+date-released: "2026-04-23"
+url: "https://github.com/swnesbitt/myPSD"
+repository-code: "https://github.com/swnesbitt/myPSD"
+license: MIT
+authors:
+  - family-names: Nesbitt
+    given-names: Stephen W.
+    orcid: "https://orcid.org/0000-0003-0348-0452"
+    affiliation: "University of Illinois Urbana-Champaign"
+keywords:
+  - radar meteorology
+  - polarimetric radar
+  - particle size distribution
+  - T-matrix
+  - teaching
+  - Python
+  - React
